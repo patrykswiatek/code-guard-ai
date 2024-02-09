@@ -33,7 +33,8 @@ CodeGuardAI is an application designed to enhance the code review process by aut
     ```
 4. Create a .env file in the root directory with the following contents:
     ```bash
-    OPENAI_API_KEY=your_api_key_here
+    OPEN_AI_API_KEY=your_api_key_here
+    OPEN_AI_MODEL=chosen_text_generation_model
     PROJECT_DIRECTORY=path_to_your_project
     ```
 5. Build the application:

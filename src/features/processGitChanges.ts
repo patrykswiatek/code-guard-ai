@@ -1,11 +1,12 @@
 import path from 'path'
-import { getPromptForFileExtension } from '../utils/get-prompt-for-file-extension'
 import { handleError } from '../utils/handle-error'
 import { executeCommand } from './execCommand'
 import { generateCompletionWithOpenAI } from './openAICompletionGenerator'
+import { PROMPT_MAPPING } from '../constants/prompts'
 
-const targetDirectory = process.env.PROJECT_DIRECTORY ?? ''
-if (!targetDirectory) {
+const { PROJECT_DIRECTORY } = process.env
+
+if (!PROJECT_DIRECTORY) {
   throw new Error('The OPENAI_API_KEY environment variable is not set.')
 }
 
@@ -13,7 +14,7 @@ export const processGitChanges = async () => {
   try {
     const changes = await executeCommand(
       'git status --porcelain',
-      targetDirectory
+      PROJECT_DIRECTORY
     )
     const changeList = changes
       .split('\n')
@@ -22,15 +23,15 @@ export const processGitChanges = async () => {
     for (const change of changeList) {
       const [, ...rest] = change.trim().split(' ')
       const filePath = rest.join(' ').trim()
-      const fullFilePath = path.join(targetDirectory, filePath)
-      const fileExtension = path.extname(filePath)
+      const fullFilePath = path.join(PROJECT_DIRECTORY, filePath)
+      const fileExtension = path.extname(filePath).slice(1)
 
       const fileContents = await executeCommand(
         `cat "${fullFilePath}"`,
-        targetDirectory
+        PROJECT_DIRECTORY
       )
 
-      const prompt = getPromptForFileExtension(fileExtension)
+      const prompt: string | undefined = PROMPT_MAPPING[fileExtension]
       if (!prompt) continue
 
       await generateCompletionWithOpenAI(prompt, fileContents)
