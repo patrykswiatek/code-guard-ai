@@ -1,5 +1,5 @@
 import 'dotenv/config'
 
-import { processGitChanges } from './features/processGitChanges'
+import { processRepositoryChanges } from './features/processRepositoryChanges'
 
-processGitChanges()
+processRepositoryChanges()
