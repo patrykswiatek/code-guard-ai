@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import { exec } from 'child_process'
 
 export const runShellCommand = (
   shellCommand: string,
@@ -10,13 +10,15 @@ export const runShellCommand = (
       { cwd: executionPath },
       (error: Error | null, standardOutput: string, standardError: string) => {
         if (error) {
-          reject(new Error(`Error executing shell command: ${error.message}`));
+          reject(new Error(`Error executing shell command: ${error.message}`))
         } else if (standardError) {
-          reject(new Error(`Shell command resulted in an error: ${standardError}`));
+          reject(
+            new Error(`Shell command resulted in an error: ${standardError}`)
+          )
         } else {
-          resolve(standardOutput.trim());
+          resolve(standardOutput.trim())
         }
       }
-    );
-  });
-};
+    )
+  })
+}

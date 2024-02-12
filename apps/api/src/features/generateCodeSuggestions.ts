@@ -1,5 +1,6 @@
 import { OpenAI } from 'openai'
 import { logAndRethrowError } from '../utils/log-and-rethrow-error'
+import websocketServer from '../server';
 
 const { OPEN_AI_API_KEY, OPEN_AI_MODEL } = process.env
 
@@ -30,7 +31,7 @@ export const generateCodeSuggestions = async (
 
     for await (const message of suggestionStream) {
       const suggestion = message.choices[0]?.delta?.content || ''
-      process.stdout.write(suggestion)
+      websocketServer.sendToClient(suggestion)
     }
   } catch (error) {
     logAndRethrowError(error)
