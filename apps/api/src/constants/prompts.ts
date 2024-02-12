@@ -1,4 +1,4 @@
-import { PromptMapping } from '../types/prompt-mapping.interface'
+import { PromptMapping } from '@/types/prompt-mapping.interface'
 
 export const PROMPT_MAPPING: PromptMapping = {
   tsx: `

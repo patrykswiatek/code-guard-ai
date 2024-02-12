@@ -1,10 +1,12 @@
 import path from 'path'
+
 import prompts from 'prompts'
-import { logAndRethrowError } from '../utils/log-and-rethrow-error'
-import { runShellCommand } from './runShellCommand'
-import { generateCodeSuggestions } from './generateCodeSuggestions'
-import { PROMPT_MAPPING } from '../constants/prompts'
-import { createMultiselectListFromChanges } from '../utils/create-multiselect-list-from-changes'
+
+import { PROMPT_MAPPING } from '@/constants/prompts'
+import { generateCodeSuggestions } from '@/features/generateCodeSuggestions'
+import { runShellCommand } from '@/features/runShellCommand'
+import { createMultiselectListFromChanges } from '@/utils/create-multiselect-list-from-changes'
+import { logAndRethrowError } from '@/utils/log-and-rethrow-error'
 
 const { PROJECT_DIRECTORY } = process.env
 const DELETED_FILE_INDICATOR = 'D'

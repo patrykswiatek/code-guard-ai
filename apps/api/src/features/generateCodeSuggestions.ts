@@ -1,6 +1,6 @@
 import { OpenAI } from 'openai'
-import { logAndRethrowError } from '../utils/log-and-rethrow-error'
-import websocketServer from '../server';
+import { logAndRethrowError } from '@/utils/log-and-rethrow-error'
+import websocketServer from '@/server'
 
 const { OPEN_AI_API_KEY, OPEN_AI_MODEL } = process.env
 
