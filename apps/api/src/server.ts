@@ -3,7 +3,6 @@ import 'dotenv/config'
 import express from 'express'
 import { createServer } from 'http'
 import { webSocketServer } from './websocketServer'
-// import { processRepositoryChanges } from './features/processRepositoryChanges'
 
 const { PORT } = process.env
 
@@ -15,7 +14,6 @@ const wsServer = webSocketServer(server);
 
 server.listen(PORT, () => {
   console.log(`Server started on port ${PORT} 🎉`);
-  // processRepositoryChanges()
 })
 
 export default wsServer;

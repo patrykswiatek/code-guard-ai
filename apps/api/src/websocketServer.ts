@@ -2,8 +2,8 @@ import { Server } from 'http'
 import WebSocket from 'ws'
 
 class WebSocketServer {
-  private wss: WebSocket.Server
-  private clients: Set<WebSocket>
+  public wss: WebSocket.Server
+  public clients: Set<WebSocket>
 
   constructor(server: Server) {
     this.clients = new Set()
