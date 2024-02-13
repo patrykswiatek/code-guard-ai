@@ -1,46 +1,23 @@
 import path from 'path'
 
-import prompts from 'prompts'
-
 import { PROMPT_MAPPING } from '@/constants/prompts'
 import { generateCodeSuggestions } from '@/features/generateCodeSuggestions'
 import { runShellCommand } from '@/features/runShellCommand'
-import { createMultiselectListFromChanges } from '@/utils/create-multiselect-list-from-changes'
 import { logAndRethrowError } from '@/utils/log-and-rethrow-error'
+import ws from 'ws'
 
 const { PROJECT_DIRECTORY } = process.env
-const DELETED_FILE_INDICATOR = 'D'
 
 if (!PROJECT_DIRECTORY) {
   throw new Error('The PROJECT_DIRECTORY environment variable is not set.')
 }
 
-export const processRepositoryChanges = async () => {
+export const processRepositoryChanges = async (
+  selectedFiles: string[],
+  websocket: ws
+) => {
   try {
-    const gitStatus = await runShellCommand(
-      'git status --porcelain',
-      PROJECT_DIRECTORY
-    )
-    const modifiedFiles = gitStatus
-      .split('\n')
-      .filter(
-        (statusLine) =>
-          statusLine && !statusLine.startsWith(DELETED_FILE_INDICATOR)
-      )
-
-    const fileSelectionPrompt = await prompts(
-      {
-        choices: createMultiselectListFromChanges(modifiedFiles),
-        hint: '- Space to toggle, Enter to confirm',
-        instructions: false,
-        name: 'selectedFiles',
-        message: 'Select the files you want to process:',
-        type: 'multiselect',
-      },
-      { onCancel: () => process.exit(0) }
-    )
-
-    for (const selectedFilePath of fileSelectionPrompt.selectedFiles) {
+    for (const selectedFilePath of selectedFiles) {
       const absoluteFilePath = path.resolve(PROJECT_DIRECTORY, selectedFilePath)
       const fileExtension = path.extname(selectedFilePath).substring(1)
 
@@ -52,7 +29,7 @@ export const processRepositoryChanges = async () => {
       const openAIPrompt = PROMPT_MAPPING[fileExtension]
       if (!openAIPrompt) continue
 
-      await generateCodeSuggestions(openAIPrompt, fileContent)
+      await generateCodeSuggestions(openAIPrompt, fileContent, websocket)
     }
   } catch (error) {
     logAndRethrowError(error)

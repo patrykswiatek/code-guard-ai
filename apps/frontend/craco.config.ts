@@ -1,6 +1,14 @@
 import { resolve } from 'path'
+import fs from 'fs'
 
-import { CracoEsLintConfig, CracoWebpackConfig } from '@craco/types'
+import {
+  CracoEsLintConfig,
+  CracoPluginDefinition,
+  CracoWebpackConfig,
+} from '@craco/types'
+
+const appDirectory = fs.realpathSync(process.cwd())
+const resolveApp = (relativePath: string) => resolve(appDirectory, relativePath)
 
 const eslint: CracoEsLintConfig = {
   configure: {
@@ -19,9 +27,19 @@ const webpack: CracoWebpackConfig = {
   },
 }
 
+const plugins: CracoPluginDefinition<{ includes: string[] }>[] = [
+  {
+    plugin: require('craco-babel-loader'),
+    options: {
+      includes: [resolveApp('../../packages/types')],
+    },
+  },
+]
+
 const exportedConfigObjects = {
   eslint,
   webpack,
+  plugins,
 }
 
 export default exportedConfigObjects

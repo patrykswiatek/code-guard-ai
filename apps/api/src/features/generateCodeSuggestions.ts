@@ -1,6 +1,6 @@
 import { OpenAI } from 'openai'
 import { logAndRethrowError } from '@/utils/log-and-rethrow-error'
-import websocketServer from '@/server'
+import ws from 'ws'
 
 const { OPEN_AI_API_KEY, OPEN_AI_MODEL } = process.env
 
@@ -15,7 +15,8 @@ const openAI = new OpenAI({ apiKey: OPEN_AI_API_KEY })
 
 export const generateCodeSuggestions = async (
   prompt: string,
-  codeSnippet: string
+  codeSnippet: string,
+  websocket: ws
 ) => {
   if (typeof prompt !== 'string' || typeof codeSnippet !== 'string') {
     throw new TypeError('Both prompt and codeSnippet must be strings.')
@@ -31,7 +32,7 @@ export const generateCodeSuggestions = async (
 
     for await (const message of suggestionStream) {
       const suggestion = message.choices[0]?.delta?.content || ''
-      websocketServer.sendToClient(suggestion)
+      websocket.send(JSON.stringify(suggestion))
     }
   } catch (error) {
     logAndRethrowError(error)

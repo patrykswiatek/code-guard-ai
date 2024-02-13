@@ -1,16 +1,11 @@
 {
   "extends": "@repo/typescript-config/base.json",
   "compilerOptions": {
-    "baseUrl": "./src",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "paths": {
-      "@/*": ["*"]
-    }
+    "jsx": "react-jsx"
   },
-  "include": ["src"],
-  "exclude": ["build", "node_modules"]
+  "include": ["./src"]
 }

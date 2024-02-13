@@ -1,2 +1,29 @@
 .response-panel {
+  @apply h-full;
+
+  .button-wrapper {
+    @apply grid grid-flow-col gap-x-4;
+    grid-template-columns: 1fr minmax(auto, 50%);
+  }
+
+  .button {
+    @apply bg-dodger-blue;
+  }
+
+  .checkboxes {
+    @apply mt-10;
+    @apply w-1/2;
+    @apply grid grid-cols-2 gap-2;
+
+    span {
+      @apply text-catskill-white;
+    }
+  }
+
+  .message-panel {
+    @apply w-full;
+    @apply h-screen;
+    @apply mt-10 p-6;
+    box-shadow: 0 0 10px theme(colors.dodger-blue-60);
+  }
 }
