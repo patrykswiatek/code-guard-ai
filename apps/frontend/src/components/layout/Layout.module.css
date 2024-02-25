@@ -1,6 +1,7 @@
 .layout {
-  @apply bg-ebony;
-  @apply py-10 px-40;
   @apply w-full;
+  @apply bg-ebony;
+  @apply min-h-screen;
+  @apply pt-10 pb-32 px-40;
   @apply text-catskill-white;
 }

@@ -20,10 +20,26 @@
     }
   }
 
+  .heading {
+    @apply mb-2 mt-4;
+    @apply font-semibold;
+  }
+
+  .text {
+    font-size: 1rem;
+    @apply mb-2 last:mb-0;
+    @apply text-catskill-white;
+  }
+
+  .message {
+    @apply h-full;
+    @apply p-6;
+  }
+
   .message-panel {
-    @apply w-full;
-    @apply h-screen;
-    @apply mt-10 p-6;
+    @apply mt-10;
+    @apply h-full w-full;
+    @apply bg-ebony-dark;
     box-shadow: 0 0 10px theme(colors.dodger-blue-60);
   }
 }

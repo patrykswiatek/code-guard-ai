@@ -1,0 +1,32 @@
+.highlighted-code {
+  @apply mt-4 mb-8;
+  @apply rounded-md;
+  @apply bg-dodger-blue-60;
+  font-size: 0.8rem;
+}
+
+.highlighted-code-heading {
+  @apply flex justify-between items-center;
+  @apply text-catskill-white-80;
+  @apply bg-dodger-blue-10;
+  @apply px-4 pt-1;
+  font-size: 0.7rem;
+}
+
+.copy-button {
+  @apply p-0;
+}
+
+.copy-text {
+  @apply flex items-center;
+  height: 1.2rem;
+}
+
+.copy-button-icon {
+  @apply text-catskill-white-80;
+}
+
+.code {
+  @apply text-catskill-white-80;
+  @apply bg-dodger-blue-10;
+}

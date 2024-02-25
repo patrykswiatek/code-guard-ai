@@ -1,11 +1,15 @@
 import { Button, Checkbox } from 'antd';
-import { type FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState, useMemo } from 'react';
 import useWebSocket from 'react-use-websocket';
 import { getRepositoryFiles } from '@/api';
 import styles from './ResponsePanel.module.css';
-
+import Markdown, { Components } from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import type { ResponsePanelProps } from '@/types/props/response-panel.props';
 import { ApiUrl } from '@repo/types';
+import remarkMath from "remark-math"
+import CodeBlock from '@/components/code-block/CodeBlock';
+import { mergeClasses } from '@/utils/merge-classes';
 
 const WS_URL = `ws://localhost:4000${ApiUrl.RepositoryProcessChanges}`;
 
@@ -32,11 +36,19 @@ const ResponsePanel: FC<ResponsePanelProps> = ({ className }) => {
   };
 
   const onSubmit = () => {
+    setMessageHistory('');
     sendMessage(JSON.stringify(selectedFiles));
   };
 
+  const markdownComponents = useMemo((): Components => ({
+    h3: ({ children }) => <h3 className={styles.heading}>{children}</h3>,
+    p: ({ children }) => <p className={styles.text}>{children}</p>,
+    ul: ({ children }) => <ul className={styles.text}>{children}</ul>,
+    code: ({ className, children }) => <CodeBlock className={className}>{children}</CodeBlock>,
+  }), []);
+
   return (
-    <div className={`${className ?? ''} ${styles['response-panel']}`}>
+    <div className={mergeClasses(className, styles['response-panel'])}>
       <div className={styles['button-wrapper']}>
         <Button className={styles.button} type="primary" onClick={handleClick}>Get files</Button>
         {filesToSelect?.length ?
@@ -49,13 +61,22 @@ const ResponsePanel: FC<ResponsePanelProps> = ({ className }) => {
           </Button> : null}
       </div>
       {filesToSelect?.length ?
-          <Checkbox.Group
-            className={styles.checkboxes}
-            options={filesToSelect}
-            value={selectedFiles}
-            onChange={setSelectedFiles}
-          /> : null}
-        <div className={styles['message-panel']}>{messageHistory}</div>
+        <Checkbox.Group
+          className={styles.checkboxes}
+          options={filesToSelect}
+          value={selectedFiles}
+          onChange={setSelectedFiles}
+        /> : null}
+      <div className={styles['message-panel']}>
+        {!!messageHistory && <div className={styles.message}>
+          <Markdown
+            remarkPlugins={[remarkGfm, remarkMath]}
+            components={markdownComponents}
+          >
+            {`${messageHistory}`}
+          </Markdown>
+        </div>}
+      </div>
     </div>
   );
 };
