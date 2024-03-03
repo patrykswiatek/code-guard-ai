@@ -5,6 +5,18 @@ import { processRepositoryChanges } from '@/features/processRepositoryChanges'
 import { getNonDeletedChangedFilesForSelection } from '@/features/getNonDeletedChangedFilesForSelection'
 import { ApiUrl } from '@repo/types'
 import expressWs from 'express-ws'
+import userRoutes from '@/routes/user'
+import session from 'express-session'
+
+declare module 'express-session' {
+  interface SessionData {
+    user: {
+      apiKey?: string
+      projectDirectory?: string
+      openAiModel?: string
+    }
+  }
+}
 
 const { PORT } = process.env
 
@@ -18,6 +30,15 @@ const { app: appWithWs } = expressWs(app)
 
 appWithWs.use(cors())
 appWithWs.use(express.json())
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET ?? '',
+    resave: false,
+    saveUninitialized: true,
+  })
+)
+
+app.use('/user', userRoutes)
 
 appWithWs.get(ApiUrl.RepositoryFiles, async (_, res) => {
   const filesToSelect = await getNonDeletedChangedFilesForSelection()

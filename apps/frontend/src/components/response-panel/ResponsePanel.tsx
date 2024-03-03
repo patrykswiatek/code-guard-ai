@@ -50,7 +50,7 @@ const ResponsePanel: FC<ResponsePanelProps> = ({ className }) => {
   return (
     <div className={mergeClasses(className, styles['response-panel'])}>
       <div className={styles['button-wrapper']}>
-        <Button className={styles.button} type="primary" onClick={handleClick}>Get files</Button>
+        <Button className={styles.button} type="primary" onClick={handleClick}>View modified files</Button>
         {filesToSelect?.length ?
           <Button
             className={styles.button}
