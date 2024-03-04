@@ -1,7 +1,6 @@
 export enum ApiUrl {
   RepositoryFiles = '/repository/files',
   RepositoryProcessChanges = '/repository/process-changes',
-  UserApiKey = '/user/api-key',
-  UserOpenAiModel = '/user/model',
+  UserAIConfig = '/user/ai-config',
   UserProjectDirectory = '/user/project-directory',
 }

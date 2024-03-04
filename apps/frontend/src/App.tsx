@@ -3,7 +3,7 @@ import { ConfigProvider } from 'antd';
 
 import Layout from '@/components/layout/Layout';
 import ResponsePanel from '@/components/response-panel/ResponsePanel';
-import InitialForm from '@/components/initial-form/InitialForm';
+import AIConfigForm from '@/components/ai-config-form/AIConfigForm';
 
 import './App.css';
 
@@ -26,7 +26,7 @@ const App: FC = () => {
       }}
     >
       <Layout>
-        <InitialForm />
+        <AIConfigForm />
         <ResponsePanel />
       </Layout>
     </ConfigProvider>
